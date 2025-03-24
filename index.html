@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plaatsbeschrijving Prototype</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    .container {
+      background: #fff;
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    input[type="file"] {
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .preview {
+      margin-top: 10px;
+    }
+    .preview img {
+      max-width: 100%;
+    }
+    #result {
+      margin-top: 20px;
+      background: #e9ffe9;
+      padding: 15px;
+      border: 1px solid #b3ffb3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Plaatsbeschrijving - Prototype</h1>
+    <form id="propertyForm">
+      <label for="address">Adres van de woning</label>
+      <input type="text" id="address" name="address" required>
+
+      <label for="description">Beschrijving van de staat</label>
+      <textarea id="description" name="description" rows="5" required></textarea>
+
+      <label for="photo">Foto uploaden/maken</label>
+      <input type="file" id="photo" name="photo" accept="image/*" capture="environment">
+
+      <div class="preview" id="preview"></div>
+
+      <button type="submit">Opslaan</button>
+    </form>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('propertyForm');
+    const photoInput = document.getElementById('photo');
+    const preview = document.getElementById('preview');
+
+    // Toon een preview van de geselecteerde foto
+    photoInput.addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if(file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          preview.innerHTML = '<img src="' + e.target.result + '" alt="Preview">';
+        }
+        reader.readAsDataURL(file);
+      } else {
+        preview.innerHTML = '';
+      }
+    });
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const address = document.getElementById('address').value;
+      const description = document.getElementById('description').value;
+      // Voor dit prototype tonen we de ingevoerde gegevens in een result div
+      document.getElementById('result').innerHTML =
+        '<h2>Ingevoerde Gegevens:</h2>' +
+        '<p><strong>Adres:</strong> ' + address + '</p>' +
+        '<p><strong>Beschrijving:</strong> ' + description + '</p>';
+      // Hier zou je de data kunnen versturen naar een backend of verder verwerken.
+    });
+  </script>
+</body>
+</html>
